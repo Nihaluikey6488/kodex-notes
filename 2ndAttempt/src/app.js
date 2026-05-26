@@ -60,5 +60,33 @@ app.get('/api/notes', async (req, res) => {
     });
 })
 
+/**
+ * @route PATCH /api/notes
+ * @description Update an existing note in the database
+ * @access Public
+ */
+app.patch('/api/notes/:id', async (req, res) => {
+    let { id } = req.params;
+    let {description} = req.body;
+    if(!description){
+        return res.status(400).json({error: "Description is required"});
+    }
+    if(description.trim().length < 10){
+        return res.status(400).json({error: "Description must be at least 10 characters long"});
+    }
+    // Update the note with the specified ID in the database using the noteModel and return the updated note in the response
+    let note = await noteModel.findById(id);
+    if(!note){
+        return res.status(404).json({error: "Note not found"});
+    }
+    note.description = description;
+    await note.save();
+    return res.status(200).json({
+        message: "Note updated successfully",
+        note
+    });
+
+})
+
 // Export configured Express application
 export default app;
