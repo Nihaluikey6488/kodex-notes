@@ -45,5 +45,20 @@ app.post("/api/notes", async (req, res) => {
     .status(201)
     .json({ message: "Note created successfully", note: newNote });
 });
+/**
+ * @route GET /api/notes
+ * @description Get all notes from the database and return them in the response
+ * @access Public
+ */
+
+app.get('/api/notes', async (req, res) => {
+    //  getting all notes from the database using the noteModel and return them in the response
+    let notes = await noteModel.find();
+    return res.status(200).json({
+        message: "Notes retrieved successfully",
+        notes
+    });
+})
+
 // Export configured Express application
 export default app;
