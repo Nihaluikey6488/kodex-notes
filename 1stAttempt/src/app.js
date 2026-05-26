@@ -16,7 +16,7 @@ await connectDb();
  * @access Public
  */
 
-app.post("/api/notes", async(req, res) => {
+app.post("/api/notes", async (req, res) => {
   let { title, description } = req.body;
   // ----validation----
   if (!title) {
@@ -41,14 +41,15 @@ app.post("/api/notes", async(req, res) => {
     });
   }
   // ---- If validation passes, create the note ----
-  let newNote=await noteModel.create({
-    title,description
-  })
+  let newNote = await noteModel.create({
+    title,
+    description,
+  });
 
   return res.status(201).json({
-    message:"Note created successfully",
-    note: newNote
-  })
+    message: "Note created successfully",
+    note: newNote,
+  });
 });
 
 /**
@@ -56,13 +57,56 @@ app.post("/api/notes", async(req, res) => {
  * @description Get all notes
  * @access Public
  */
-app.get('/api/notes',async(req,res)=>{
-    // Get all Existing notes
-    let notes=await noteModel.find()
+app.get("/api/notes", async (req, res) => {
+  // Get all Existing notes
+  let notes = await noteModel.find();
+  return res.status(200).json({
+    messagge: "Notes fetched successfullt",
+    notes,
+  });
+});
+
+/**
+ * @route PATCH /api/notes
+ * @description Update a note by id require description in the request body
+ * @access Public
+ 
+ */
+
+app.patch('/api/notes/:id',async(req,res)=>{
+    let {id}=req.params
+    let {description} =req.body
+
+    // --validation--
+    if(!description){
+        return res.status(400).json({
+            message:"Description is required"
+        })
+    }
+    if(description.trim().length<10){
+         return res.status(400).json({
+            message:"Description must be  alteast more than 10 characters"
+        })
+    }
+
+    let note=await noteModel.findById(id)
+
+    if(!note) {
+         return res.status(404).json({
+            message:"note not found"
+        })
+    }
+    note.description=description
+    await note.save()
+
+
     return res.status(200).json({
-        messagge:"Notes fetched successfullt",
-        notes
+        message:"note updated successfully",
+        note
     })
+
+
+
 })
 
 // Export configured Express app
