@@ -1,6 +1,10 @@
 import noteModel from "../models/note.model.js"
 
-
+/**
+ * @route POST /api/notes
+ * @description Create a new note need title and description in the request body
+ * @access Public
+ */
 
 export const addNoteController=async(req,res)=>{
    try {
@@ -48,8 +52,38 @@ export const addNoteController=async(req,res)=>{
 
     // Handle servor errors
     return res.status(500).json({
-        message:"Internal server error"
+        error:"Internal server error"
     })
    }
 }
 
+/**
+ * @route GET /api/notes
+ * @description Fetch all Existing notes
+ * @access Public
+ */
+
+
+export const getNoteController=async(req,res)=>
+{
+    try {
+        // Get all Existing Notes
+            let notes=await noteModel.find()
+
+        // Check if notes is Empty
+        if(notes.length==0){
+            return res.status(400).json({
+                message:"No notes found"
+            })
+        }
+        return res.status(200).json({
+            message:"Notes fetched successfully",
+            notes
+        })
+
+    } catch (error) {
+        return res.status(500).json({
+            error:"Internal server error"
+        })
+    }
+}

@@ -1,5 +1,5 @@
 import express from 'express'
-import { addNoteController } from '../controllers/note.controller.js'
+import { addNoteController, getNoteController } from '../controllers/note.controller.js'
 
 // Create router object 
 let  router =express.Router()
@@ -8,5 +8,12 @@ let  router =express.Router()
 // When a POST request comes to /notes,
 // addNoteController function will run
 router.post('/notes',addNoteController)
+
+// GET API route for fetching  notes
+// URL: /notes
+// When a GET request comes to /notes,
+// getNoteController function will run
+
+router.get('/notes',getNoteController)
 export default router
 
