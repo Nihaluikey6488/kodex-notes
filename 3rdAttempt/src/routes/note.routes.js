@@ -1,5 +1,5 @@
 import express from 'express'
-import { addNoteController, getNoteController } from '../controllers/note.controller.js'
+import { addNoteController, getNoteController, updateNoteController } from '../controllers/note.controller.js'
 
 // Create router object 
 let  router =express.Router()
@@ -15,5 +15,13 @@ router.post('/notes',addNoteController)
 // getNoteController function will run
 
 router.get('/notes',getNoteController)
+
+// PATCH API route for updating sigle note 
+// URL: /notes
+// When a PATCH request comes to /notes, u need to provide the id of that note u want to update 
+// updateNoteController function will run
+
+
+router.patch('/notes/:id',updateNoteController)
 export default router
 
