@@ -86,7 +86,7 @@ export const getNoteController = async (req, res) => {
 
 /**
  * @route PATCH /api/notes
- * @description UPDATE an Existed note in database by providing Id
+ * @description UPDATE the Existed note in database by providing Id
  * @access Public
  */
 
@@ -135,3 +135,25 @@ try {
 
   
 };
+
+/**
+ * @route DELETE /api/notes
+ * @description DELETE the Existed note in database by providing Id
+ * @access Public
+ */
+export const deleteNoteController=async(req,res)=>{
+try {
+let {id}=req.params  //get id from params
+await noteModel.findByIdAndDelete(id) //delete note 
+  return res.status(200).json({
+    message:"Note Deleted Successfully",
+
+  })
+} catch (error) {
+    // Handles server errors
+    return res.status(500).json({
+    
+        error:"Internal server error"
+    })
+}
+}

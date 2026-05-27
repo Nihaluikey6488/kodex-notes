@@ -1,5 +1,5 @@
 import express from 'express'
-import { addNoteController, getNoteController, updateNoteController } from '../controllers/note.controller.js'
+import { addNoteController, getNoteController, updateNoteController,deleteNoteController } from '../controllers/note.controller.js'
 
 // Create router object 
 let  router =express.Router()
@@ -23,5 +23,13 @@ router.get('/notes',getNoteController)
 
 
 router.patch('/notes/:id',updateNoteController)
+
+
+// DELETE API route for Deleting sigle note 
+// URL: /notes
+// When a DELETE request comes to /notes, provided id of that note will delete
+// deleteNoteController function will run
+
+router.delete('/notes/:id',deleteNoteController)
 export default router
 
